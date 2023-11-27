@@ -10,34 +10,34 @@
   <!-- iOS has a lot of restrictions on playing videos in the browser. 
   To play an inline video texture, we must set the meta tag. 
   A-Frame will inject this if missing.-->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  
+  <meta name="apple-mobile-web-app-capable" content="yes" /> 
 
   <!-- import aframe and then ar.js with image tracking / location based features -->
   <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-  
+
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
   <script src="./play-on-click.js"></script>
 
-  
   <!-- style for the loader -->
-  <style >
+  <style>
     .arjs-loader {
       height: 100%;
       width: 100%;
-      background-color: rgb(251, 54, 54);
-      display:flex;
-      justify-content: "center";
-      align-items: center;
-      z-index: 9999;
+      position: absolute;
       top: 0;
       left: 0;
-      position: absolute;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .arjs-loader div {
       text-align: center;
-      font-size: 2cm;
-      color: aliceblue;
+      font-size: 1.25em;
+      color: white;
     }
   </style>
 
@@ -47,26 +47,63 @@
 
   <!-- minimal loader shown until image descriptors are loaded. 
     Loading may take a while according to the device computational power -->
-    
-  <!-- <div class="arjs-loader">
-    <div>
-      "loading please wait..."
-    </div>
-  </div> -->
-  
+
+  <div class="arjs-loader">
+    <div>Loading, please wait...</div>
+  </div>
 
   <!-- a-frame scene -->
-  <a-scene vr-mode-ui="enabled:false" renderer="logarithmicDepthBuffer:true" embedded arjs = "trackingMethod:best;sourceType:webcam,debugUIEnabled:false">
-    <a-entity camera position="0 0 10">
-    </a-entity>
+  <a-scene 
+    vr-mode-ui="enabled: false;"
+    renderer="logarithmicDepthBuffer: true;" 
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;">
+
+    <!-- static camera that moves according to the device movemenents -->
+    <a-entity id="camera" camera position="0 0 10"></a-entity>
 
     <a-assets>
-      <video id="vid1" src="./assets/videos/Rocket_Launching_Animation.mp4" loop="true" preload="auto" playsinline webkit-playsinline autoplay crossorigin="anonymous"></video>
-    </a-assets>
 
-    <a-nft id="nft-model" type="nft" url="./assets/images/rocket_img.png" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshhold="5">
-      <a-video id="rocket" src="#vid1" width="600" height="600" position="0 0 -20" rotation="-90 0 0" play-on-click></a-video>
+      <video id="video" 
+        src="./assets/videos/soccer-match.mp4"
+        preload="auto"  
+        loop="true" 
+        playsinline
+        webkit-playsinline 
+        autoplay 
+        crossorigin="anonymous">
+      </video>
+  
+    </a-assets>
+  
+  
+  
+    <!-- a-nft is the anchor that defines an Image Tracking entity -->
+    <!-- on 'url' use the path to the Image Descriptors created before. -->
+    <!-- the path should end with the name without the extension 
+      e.g. if file is pepaa.fset' the path should end with pepaa -->
+  
+    <a-nft id="one" 
+      type="nft" 
+      url="./assets/marker-desc/stick-man" 
+      smooth="true" 
+      smoothCount="10" 
+      smoothTolerance=".01"
+      smoothThreshold="5">
+  
+      <!-- As a child of the a-nft entity, define the content to show. -->
+  
+      <a-video id="vid" 
+        src="#video" 
+        width="300" 
+        height="300" 
+        position="150 150 -50" 
+        rotation="-90 0 0"
+        play-on-click>
+      </a-video>
+  
     </a-nft>
+
   </a-scene>
 
 </body>
